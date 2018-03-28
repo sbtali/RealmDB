@@ -4,9 +4,10 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
+import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import io.realm.Realm
-import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -14,18 +15,27 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val button = findViewById<Button>(R.id.button)
+        val id_et = findViewById<EditText>(R.id.id_et)
+        val name_et = findViewById<EditText>(R.id.name_et)
+        val data = findViewById<TextView>(R.id.data)
+        val save = findViewById<Button>(R.id.save)
+        val read = findViewById<Button>(R.id.read)
         val realm = Realm.getDefaultInstance()
 
-        realm.executeTransactionAsync(Realm.Transaction {
-            realm -> realm.createObject(Task::class.java, UUID.randomUUID().toString()).name = "sabet"
+        save.setOnClickListener(View.OnClickListener {
+            realm.executeTransactionAsync(Realm.Transaction {
+                realm -> realm.createObject(Task::class.java, id_et.text.toString().trim()).name = name_et.text.toString().trim()
+            })
         })
 
-        button.setOnClickListener(View.OnClickListener {
-            val userSchedules = realm.where(Task::class.java).findAll()
-            for (userSchedule in userSchedules) {
-                Toast.makeText(this@MainActivity, userSchedule.name, Toast.LENGTH_SHORT).show()
+        read.setOnClickListener(View.OnClickListener {
+            val tasks = realm.where(Task::class.java).findAll()
+            var string : String = ""
+            for (task in tasks) {
+                Toast.makeText(this@MainActivity, task.id + " " + task.name, Toast.LENGTH_SHORT).show()
+                string = string + task.id + " " + task.name + "\t"
             }
+            data.text = string
         })
 
     }

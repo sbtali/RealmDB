@@ -6,7 +6,6 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
-import android.widget.Toast
 import io.realm.Realm
 
 class MainActivity : AppCompatActivity() {
@@ -32,7 +31,6 @@ class MainActivity : AppCompatActivity() {
             val tasks = realm.where(Task::class.java).findAll()
             var string : String = ""
             for (task in tasks) {
-                Toast.makeText(this@MainActivity, task.id + " " + task.name, Toast.LENGTH_SHORT).show()
                 string = string + task.id + " " + task.name + "\t"
             }
             data.text = string

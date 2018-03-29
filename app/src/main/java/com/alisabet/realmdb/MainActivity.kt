@@ -29,9 +29,10 @@ class MainActivity : AppCompatActivity() {
         realm = Realm.getDefaultInstance()
 
         save.setOnClickListener(View.OnClickListener {
-            realm.executeTransactionAsync(Realm.Transaction {
-                realm -> realm.createObject(Model::class.java, id_et.text.toString().trim()).name = name_et.text.toString().trim()
-            })
+            val model = Model()
+            model.id = id_et.text.toString().trim()
+            model.name = name_et.text.toString().trim()
+            writeToDB(model)
         })
 
         read.setOnClickListener(View.OnClickListener {
@@ -45,5 +46,10 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    fun writeToDB(model: Model){
+        realm.executeTransactionAsync(Realm.Transaction {
+            realm -> realm.createObject(Model::class.java, model.id).name = model.name
+        })
+    }
 
 }

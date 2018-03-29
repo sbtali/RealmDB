@@ -9,7 +9,7 @@ class AppLoader : Application() {
         super.onCreate()
         Realm.init(this)
         val realmConfig = RealmConfiguration.Builder()
-                .name("tasky.realm")
+                .name("db.realm")
                 .schemaVersion(0)
                 .build()
         Realm.setDefaultConfiguration(realmConfig)

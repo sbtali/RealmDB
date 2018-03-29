@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity() {
         val models = realm.where(Model::class.java).findAll()
         var string : String = ""
         for (model in models) {
-            string+= model.id + " " + model.name
+            string+= model.id + " " + model.name + "\n"
         }
         return string
     }

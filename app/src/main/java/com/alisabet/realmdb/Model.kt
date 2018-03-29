@@ -4,7 +4,7 @@ import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 import io.realm.annotations.Required
 
-open class Task : RealmObject() {
+open class Model : RealmObject() {
     @Required
     @PrimaryKey
     var id: String? = null

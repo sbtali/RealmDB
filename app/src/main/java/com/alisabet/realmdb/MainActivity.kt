@@ -21,35 +21,40 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        initViews()
+
+        save.setOnClickListener(View.OnClickListener {
+            val model = Model(id_et.text.toString().trim(), name_et.text.toString().trim())
+            writeToDB(model)
+        })
+
+        read.setOnClickListener(View.OnClickListener {
+            data.text = readAllFromDB()
+        })
+
+    }
+    private fun initViews(){
         id_et = findViewById<EditText>(R.id.id_et)
         name_et = findViewById<EditText>(R.id.name_et)
         data = findViewById<TextView>(R.id.data)
         save = findViewById<Button>(R.id.save)
         read = findViewById<Button>(R.id.read)
         realm = Realm.getDefaultInstance()
-
-        save.setOnClickListener(View.OnClickListener {
-            val model = Model()
-            model.id = id_et.text.toString().trim()
-            model.name = name_et.text.toString().trim()
-            writeToDB(model)
-        })
-
-        read.setOnClickListener(View.OnClickListener {
-            val tasks = realm.where(Model::class.java).findAll()
-            var string : String = ""
-            for (task in tasks) {
-                string = string + task.id + " " + task.name + "\t"
-            }
-            data.text = string
-        })
-
     }
 
-    fun writeToDB(model: Model){
+    private fun writeToDB(model: Model){
         realm.executeTransactionAsync(Realm.Transaction {
             realm -> realm.createObject(Model::class.java, model.id).name = model.name
         })
+    }
+
+    private fun readAllFromDB() : String{
+        val models = realm.where(Model::class.java).findAll()
+        var string : String = ""
+        for (model in models) {
+            string+= model.id + " " + model.name
+        }
+        return string
     }
 
 }

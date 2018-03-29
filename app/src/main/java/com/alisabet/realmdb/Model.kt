@@ -10,10 +10,8 @@ open class Model() : RealmObject() {
     var id: String? = null
     @Required
     var name: String? = null
-
     constructor(id: String, name: String) : this(){
         this.id = id
         this.name = name
     }
-
 }
